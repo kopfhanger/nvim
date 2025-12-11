@@ -35,8 +35,9 @@ require('packer').startup({
         require('pack/vim-expand-region').config()
         use { 'terryma/vim-expand-region', config = "require('pack/vim-expand-region').setup()" }
 
-        -- ff 高亮光标下的word FF取消全部高亮
-        use { 'Mr-LLLLL/interestingwords.nvim', config = "require('pack/interestingwords-nvim').setup()", keys = { 'ff', 'FF' } }
+        -- ff 高亮光标下的word
+        require('pack/vim-interestingwords').config()
+        use { 'lfv89/vim-interestingwords', config = "require('pack/vim-interestingwords').setup()" }
 
         -- 多光标插件
         require('pack/vim-visual-multi').config()
@@ -65,23 +66,17 @@ require('packer').startup({
 
         -- fzf
         require('pack/fzf').config()
-        use { "ibhagwan/fzf-lua", requires = { "nvim-tree/nvim-web-devicons" } }
+        use { "ibhagwan/fzf-lua", branch = 'main', requires = { "nvim-tree/nvim-web-devicons" }, config = "require('pack/fzf').setup()" }
 
         -- tree-sitter
         require('pack/tree-sitter').config()
         use { 'nvim-treesitter/nvim-treesitter', config = "require('pack/tree-sitter').setup()", run = ':TSUpdate', event = 'BufRead' }
         use { 'nvim-treesitter/playground', after = 'nvim-treesitter' }
 
-        -- indentmini 缩进线插件
-        use { 'nvimdev/indentmini.nvim', config = "require('pack/indentmini').setup()" }
-
         -- markdown预览插件 导航生成插件
         require('pack/markdown').config()
         use { 'mzlogin/vim-markdown-toc', ft = 'markdown' }
-        use { 'iamcco/markdown-preview.nvim', config = "require('pack/markdown').setup()", run = function() G.fn["mkdp#util#install"]() end, cmd = 'MarkdownPreview', ft = 'markdown' }
-
-        -- color-picker / color-highlighter
-        use { 'uga-rosa/ccc.nvim', config = "require('pack/ccc').setup()", cmd = { 'CccPick', 'CccHighlighterEnable'} } -- 颜色选择器
+        use { 'iamcco/markdown-preview.nvim', config = "require('pack/markdown').setup()", run = 'cd app && yarn install', cmd = 'MarkdownPreview', ft = 'markdown' }
 
         -- 文件管理器
         require('pack/nvim-tree').config()
@@ -97,8 +92,10 @@ require('packer').startup({
         use { 'yaocccc/vim-comment', cmd = '*ToggleComment' }                          -- 注释插件
         use { 'yaocccc/vim-echo', cmd = "VECHO" }                                      -- 快速echo、print
         use { 'yaocccc/vim-fcitx2en', event = 'InsertLeavePre' }                       -- 退出输入模式时自动切换到英文
+        use { 'yaocccc/nvim-hlchunk' }                                                 -- 高亮{}范围
         use { 'yaocccc/vim-surround', event = 'ModeChanged' }                          -- 操作成对的 ""  {}  [] 等的插件
         use { 'yaocccc/nvim-foldsign', event = 'CursorHold', config = 'require("nvim-foldsign").setup()' } -- signcolumn显示折叠信息
+        use { 'yaocccc/nvim-hl-mdcodeblock.lua', after = 'nvim-treesitter', config = "require('pack/markdown').setup_hlcodeblock()" }
     end,
     config = {
         git = { clone_timeout = 120, depth = 1 },
